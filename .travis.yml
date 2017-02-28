@@ -1,0 +1,22 @@
+language: node_js
+sudo: true
+cache:
+  directories:
+  - node_modules
+node_js: stable
+script:
+- npm run lint
+- npm run codecov
+deploy:
+  provider: cloudfoundry
+  api: https://api.ng.bluemix.net
+  username: $CF_USERNAME
+  password: $CF_PASSWORD
+  name: food-coach
+  organization: WatsonPlatformServices
+  space: appgallery
+  on:
+    repo: watson-developer-cloud/food-coach
+    branch: master
+before_install:
+- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] &&  openssl aes-256-cbc -K $encrypted_373eea20a8e7_key -iv $encrypted_373eea20a8e7_iv -in .env.enc -out .env -d  || true'
